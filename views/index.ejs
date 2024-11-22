@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Socket Button</title>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        // Kết nối với Socket.IO server
+        var socket = io();
+
+        // Lắng nghe sự kiện từ server
+        socket.on('button_clicked', function(data) {
+            alert(data); // Hiển thị thông báo khi server gửi sự kiện
+        });
+
+        // Hàm gọi khi nhấn vào button
+        function sendButtonClick() {
+            fetch('/click-button')  // Gửi request tới server khi nhấn button
+                .then(response => response.text())
+                .then(data => console.log(data)); // Xử lý phản hồi từ server
+        }
+    </script>
+</head>
+<body>
+    <h1>Button Example</h1>
+    <button onclick="sendButtonClick()">Send Notify</button>
+</body>
+</html>
