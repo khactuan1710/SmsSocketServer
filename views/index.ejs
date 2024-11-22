@@ -6,23 +6,18 @@
     <title>Socket Button</title>
     <script src="/socket.io/socket.io.js"></script>
     <script>
-        // Kết nối với Socket.IO server
         var socket = io();
 
-        // Lắng nghe sự kiện từ server
         socket.on('button_clicked', function(data) {
-            alert(data); // Hiển thị thông báo khi server gửi sự kiện
+            alert(data); 
         });
 
-        // Hàm gọi khi nhấn vào button
         function sendButtonClick() {
-            // Lấy giá trị từ ô nhập số điện thoại
             var phoneNumber = document.getElementById("phoneNumber").value;
             
-            // Gửi số điện thoại qua fetch tới server
             fetch('/click-button?phone=' + encodeURIComponent(phoneNumber))  
                 .then(response => response.text())
-                .then(data => console.log(data)); // Xử lý phản hồi từ server
+                .then(data => console.log(data)); 
         }
     </script>
 </head>
