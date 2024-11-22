@@ -1,7 +1,7 @@
 const express = require('express');
 const http = require('http');
 const { Server } = require('socket.io');
-const path = require('path');  // Thêm dòng này
+const path = require('path');
 
 // Tạo ứng dụng Express
 const app = express();
@@ -14,21 +14,24 @@ const io = new Server(server, {
     },
 });
 
-app.set('views', path.join(__dirname, 'views')); // Đảm bảo đường dẫn đúng
-app.set('view engine', 'ejs'); // Đảm bảo bạn đang sử dụng ejs làm view engine
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'ejs');
 
 // Tạo route chính để hiển thị button
 app.get('/', (req, res) => {
     res.render('index');  // render file 'index.ejs'
 });
 
-// Tạo route để giả lập việc nhấn button
+// Tạo route để giả lập việc nhấn button và gửi số điện thoại
 app.get('/click-button', (req, res) => {
+    const phoneNumber = req.query.phone;  // Lấy số điện thoại từ query string
     console.log('Button clicked! Sending socket event to clients.');
+    console.log('Phone Number:', phoneNumber);  // In ra số điện thoại
 
     // Gửi socket event cho tất cả các client đang kết nối
-    io.emit('button_clicked', 'Button was clicked on the server!');
-    res.send('Button click event sent to clients');
+    io.emit('button_clicked', `Button was clicked! Phone number: ${phoneNumber}`);
+    
+    res.send(`Button click event sent to clients. Phone number: ${phoneNumber}`);
 });
 
 // Lắng nghe kết nối từ client

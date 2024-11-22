@@ -16,7 +16,11 @@
 
         // Hàm gọi khi nhấn vào button
         function sendButtonClick() {
-            fetch('/click-button')  // Gửi request tới server khi nhấn button
+            // Lấy giá trị từ ô nhập số điện thoại
+            var phoneNumber = document.getElementById("phoneNumber").value;
+            
+            // Gửi số điện thoại qua fetch tới server
+            fetch('/click-button?phone=' + encodeURIComponent(phoneNumber))  
                 .then(response => response.text())
                 .then(data => console.log(data)); // Xử lý phản hồi từ server
         }
@@ -24,6 +28,12 @@
 </head>
 <body>
     <h1>Button Example</h1>
+    
+    <!-- Thêm ô nhập số điện thoại -->
+    <label for="phoneNumber">Số điện thoại nhận SMS:</label>
+    <input type="text" id="phoneNumber" placeholder="Nhập số điện thoại">
+
+    <!-- Button gửi sự kiện -->
     <button onclick="sendButtonClick()">Send Notify</button>
 </body>
 </html>
