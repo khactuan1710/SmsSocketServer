@@ -1,34 +1,48 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Socket Button</title>
     <script src="/socket.io/socket.io.js"></script>
     <script>
         var socket = io();
 
-        socket.on('button_clicked', function(data) {
-            alert(data); 
+        socket.on("button_clicked", function (data) {
+            alert(data);
+        });
+
+        socket.on("sms_received", function (data) {
+            if (data && data.sender && data.message) {
+                var receiveSmsElement = document.getElementById("receive_sms");
+
+                var messageContent = `Từ: ${data.sender}, Nội dung: ${data.message}`;
+
+                receiveSmsElement.textContent = messageContent;
+            }
         });
 
         function sendButtonClick() {
             var phoneNumber = document.getElementById("phoneNumber").value;
-            
-            fetch('/click-button?phone=' + encodeURIComponent(phoneNumber))  
-                .then(response => response.text())
-                .then(data => console.log(data)); 
+
+            fetch("/click-button?phone=" + encodeURIComponent(phoneNumber))
+                .then((response) => response.text())
+                .then((data) => console.log(data));
         }
     </script>
 </head>
+
 <body>
-    <h1>Button Example</h1>
-    
+    <h1>Send Sms</h1>
+
     <!-- Thêm ô nhập số điện thoại -->
     <label for="phoneNumber">Số điện thoại nhận SMS:</label>
-    <input type="text" id="phoneNumber" placeholder="Nhập số điện thoại">
+    <input type="text" id="phoneNumber" placeholder="Nhập số điện thoại" />
 
+    <p type="text" id="receive_sms"  ></p>
     <!-- Button gửi sự kiện -->
     <button onclick="sendButtonClick()">Send Notify</button>
 </body>
+
 </html>

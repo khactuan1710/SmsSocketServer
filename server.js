@@ -33,6 +33,13 @@ app.get('/click-button', (req, res) => {
 io.on('connection', (socket) => {
     console.log('A user connected:', socket.id);
 
+    socket.on('sms_received', (data) => {
+        console.log('Received SMS:', data);
+
+        // Phát lại sự kiện để gửi nội dung SMS tới tất cả client
+        io.emit('sms_received', data);
+    });
+    
     socket.on('disconnect', () => {
         console.log('User disconnected:', socket.id);
     });
